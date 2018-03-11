@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.dto.CartDTO;
 import com.example.entity.ProductInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,7 @@ public interface ProductService {
 
     /**
      * 查询在架的的商品列表
+     *
      * @return
      */
     List<ProductInfo> findUpAll();
@@ -24,9 +26,9 @@ public interface ProductService {
     ProductInfo save(ProductInfo productInfo);
 
     //加库存
-
+    void increaseStock(List<CartDTO> cartDTOList);
 
     //减库存
-
+    void decreaseStock(List<CartDTO> cartDTOList);
 
 }
