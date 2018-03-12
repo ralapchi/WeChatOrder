@@ -111,5 +111,7 @@ public class OrderMasterServiceImplTest {
         OrderDTO orderDTO = orderMasterService.paid(result);
         Assert.assertEquals(PayStatusEnum.SUCCESS.getCode(), orderDTO.getPayStatus());
 
+
     }
+
 }

@@ -49,9 +49,27 @@ public class OrderMasterServiceImpl implements OrderMasterService {
     @Override
     @Transactional
     public OrderDTO create(OrderDTO orderDTO) {
+
         // List<CartDTO> cartDTOList = new ArrayList<>();
         String orderId = KeyUtil.genUniqueKey();
         BigDecimal orderAmount = new BigDecimal(0);
+
+//        orderDTO.getOrderDetailList().forEach(e -> {
+//            ProductInfo productInfo = productService.findOne(e.getProductId());
+//            if (productInfo == null)
+//                throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+//            //2.计算订单总价
+//            orderAmount = productInfo.getProductPrice()
+//                    .multiply(new BigDecimal(e.getProductQuantity()))
+//                    .add(orderAmount);
+//
+//            //订单详情入库
+//            e.setDetailId(KeyUtil.genUniqueKey());
+//            e.setOrderId(orderId);
+//
+//            BeanUtils.copyProperties(productInfo, e);
+//            orderDetailRepository.save(e);
+//        });
         //1.查询商品数量 价格
         for (OrderDetail detail : orderDTO.getOrderDetailList()) {
             ProductInfo productInfo = productService.findOne(detail.getProductId());
@@ -74,8 +92,8 @@ public class OrderMasterServiceImpl implements OrderMasterService {
 
         //3.写入（master and detail）
         OrderMaster orderMaster = new OrderMaster();
+        orderDTO.setOrderId(orderId);
         BeanUtils.copyProperties(orderDTO, orderMaster);
-        orderMaster.setOrderId(orderId);
         orderMaster.setOrderAmount(orderAmount);
         orderMaster.setOrderStatus(OrderStatusEnum.NEW.getCode());
         orderMaster.setPayStatus(PayStatusEnum.WAIT.getCode());
@@ -87,7 +105,7 @@ public class OrderMasterServiceImpl implements OrderMasterService {
                 new CartDTO(e.getProductId(), e.getProductQuantity()))
                 .collect(Collectors.toList());
         productService.decreaseStock(cartDTOList);
-        return null;
+        return orderDTO;
     }
 
     @Override

@@ -52,7 +52,10 @@
         <dependency>
             <groupId>org.project.lombok</groupId>
             <artifactId>lombok</artifactId>
-            <version></version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
         </dependency>
     </dependencies>
 
