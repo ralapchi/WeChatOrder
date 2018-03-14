@@ -6,6 +6,7 @@ import com.example.dto.OrderDTO;
 import com.example.enums.ResultEnum;
 import com.example.exception.SellException;
 import com.example.form.OrderForm;
+import com.example.service.BuyerService;
 import com.example.service.OrderMasterService;
 import com.example.utils.ResultVoUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,9 @@ public class BuyerOrderController {
 
     @Autowired
     private OrderMasterService orderMasterService;
+
+    @Autowired
+    private BuyerService buyerService;
 
     //创建订单
 
@@ -75,12 +79,30 @@ public class BuyerOrderController {
 
         //Date ->long
 
+        return ResultVoUtil.success(orderDTOPage.getContent());
+    }
 
 
-        return ResultVoUtil.success(orderDTOPage);
+    //订单详情
 
-    }//订单详情
+    @GetMapping("/detail")
+    public ResultVo<OrderDTO> detail(@RequestParam("openid") String openid,
+                                     @RequestParam("orderId") String orderId) {
+        //todo  不安全的做法，需要改进
+        OrderDTO orderDTO = buyerService.findOrderOne(openid, orderId);
+
+        return ResultVoUtil.success(orderDTO);
+
+    }
 
 
     //取消订单
+    @PostMapping("/cancel")
+    public ResultVo cancel(@RequestParam("openid") String openid,
+                           @RequestParam("orderId") String orderId) {
+        //todo 不安全的做法，需要改进
+        OrderDTO orderDTO = buyerService.cancelOrderOne(openid,orderId);
+        return ResultVoUtil.success();
+
+    }
 }
