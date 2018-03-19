@@ -3,7 +3,9 @@ package com.example.dto;
 import com.example.entity.OrderDetail;
 import com.example.enums.OrderStatusEnum;
 import com.example.enums.PayStatusEnum;
+import com.example.utils.EnumUtil;
 import com.example.utils.serializer.DateToLongSerializer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
@@ -37,6 +39,16 @@ public class OrderDTO {
     private Integer orderStatus;
     //支付状态，0未支付
     private Integer payStatus;
+
+    @JsonIgnore
+    public OrderStatusEnum getOrderStatusEnum() {
+        return EnumUtil.getByCode(orderStatus, OrderStatusEnum.class);
+    }
+
+    @JsonIgnore
+    public PayStatusEnum getPayStatusEnum() {
+        return EnumUtil.getByCode(payStatus, PayStatusEnum.class);
+    }
 
 
     private List<OrderDetail> orderDetailList;

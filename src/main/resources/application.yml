@@ -19,5 +19,9 @@ server:
 #    com.example.LoggerTest: debug
 
 wechat:
-  mpAppId:wxd41354458313545
-  mpAppSecret:12df513532sf153e31f5
+  mpAppId: wx1cedbacc589c1ac6
+  mpAppSecret: f6c3d805977f08cb2289dace5b816491
+  mchId: 3q3243
+  mchKey: 2345345
+  keyPath: /D #证书路径
+  notifyUrl: http://www.baidu.com

@@ -20,6 +20,10 @@ public interface OrderMasterService {
 
     Page<OrderDTO> findList(String buyeropenId, Pageable pageable);
 
+    //查询列表订单
+
+    Page<OrderDTO> findAll( Pageable pageable);
+
     //取消订单
 
     OrderDTO cancel(OrderDTO orderDTO);

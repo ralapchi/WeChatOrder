@@ -114,4 +114,13 @@ public class OrderMasterServiceImplTest {
 
     }
 
+    @Test
+    public void findAll() {
+        PageRequest request = new PageRequest(0, 2);
+        Page<OrderDTO> orderDTOPage = orderMasterService.findAll(request);
+       // Assert.assertNotEquals(0, orderDTOPage.getTotalElements());
+
+        Assert.assertTrue("查询所有的订单列表", orderDTOPage.getTotalElements() > 0);
+    }
+
 }

@@ -18,7 +18,8 @@ public enum ResultEnum {
     CART_EMPTY(18, "购物车不能为空"),
     ORDER_PAY_STATUS_ERROR(17, "订单支付状态不正确"),
     ORDER_OWNER_ERROR(18, "订单不属于当前用户"),
-    WECHAT_MP_ERROR(19, "微信方面错误");
+    WECHAT_MP_ERROR(19, "微信方面错误"),
+    WXPAY_NOTIFY_MONEY_VERIFY_ERROR(20,"金额校验不通过");
 
     private Integer code;
 
