@@ -20,7 +20,7 @@ public class CategoryServiceImplTest {
     }
 
     @Test
-    public void findAll() {
+    public void findAll()  {
     }
 
     @Test

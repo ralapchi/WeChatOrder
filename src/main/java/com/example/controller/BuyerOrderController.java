@@ -101,8 +101,11 @@ public class BuyerOrderController {
     public ResultVo cancel(@RequestParam("openid") String openid,
                            @RequestParam("orderId") String orderId) {
         //todo 不安全的做法，需要改进
-        OrderDTO orderDTO = buyerService.cancelOrderOne(openid,orderId);
+        OrderDTO orderDTO = buyerService.cancelOrderOne(openid, orderId);
         return ResultVoUtil.success();
 
     }
 }
+
+
+
