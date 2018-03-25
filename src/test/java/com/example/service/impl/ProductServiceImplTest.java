@@ -1,6 +1,8 @@
 package com.example.service.impl;
 
 import com.example.entity.ProductInfo;
+import com.example.enums.PayStatusEnum;
+import com.example.enums.ProductStatusEnum;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -58,6 +60,15 @@ public class ProductServiceImplTest {
 
         ProductInfo result = productServiceimpl.save(productInfo);
         Assert.assertNotNull(result);
+
+    }
+
+    @Test
+    public void onSale() {
+
+        ProductInfo productInfo = productServiceimpl.onSale("123456");
+
+        Assert.assertEquals(ProductStatusEnum.UP, productInfo.getProductStatusEnum());
 
     }
 }

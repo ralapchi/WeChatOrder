@@ -13,7 +13,7 @@
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                 <h4>
                     错误!
-                </h4> <strong>${message}}</strong> 3秒后自动跳转<a href="#" class="alert-link">alert link</a>
+                </h4> <strong>${message!""}</strong> 3秒后自动跳转<a href="#" class="alert-link"></a>
             </div>
         </div>
     </div>
