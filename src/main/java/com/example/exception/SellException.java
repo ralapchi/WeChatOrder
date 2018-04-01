@@ -1,10 +1,12 @@
 package com.example.exception;
 
 import com.example.enums.ResultEnum;
+import lombok.Getter;
 
 /**
  * Created by qidd on 2018-3-11
  */
+@Getter
 public class SellException extends RuntimeException {
 
     private Integer code;

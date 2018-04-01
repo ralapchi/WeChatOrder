@@ -10,6 +10,7 @@ import com.example.service.ProductCategoryService;
 import com.example.service.ProductService;
 import com.example.service.impl.ProductServiceImpl;
 import com.example.utils.KeyUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,6 +31,7 @@ import java.util.Map;
  * Created by qidd on 2018-3-25
  */
 @Controller
+@Slf4j
 @RequestMapping("seller/product")
 public class SellProductController {
 
@@ -45,6 +47,7 @@ public class SellProductController {
                              Map<String, Object> map) {
 
         PageRequest pageRequest = new PageRequest(page - 1, size);
+      //  log.info("productService={}", productService);
         Page<ProductInfo> ProductInfoPage = productService.findAll(pageRequest);
         map.put("productPage", ProductInfoPage);
         map.put("currentPage", page);

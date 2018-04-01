@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
  * Created by qidd on 2018-3-25
  */
 @Data
-@ConfigurationProperties(prefix = "projectUrl")
+@ConfigurationProperties(prefix = "projecturl")
 @Component
 public class ProjectUrlConfig {
     /**
@@ -28,4 +28,27 @@ public class ProjectUrlConfig {
 
     public String sellUrl;
 
+    public String getWeChatMpAuthorize() {
+        return WeChatMpAuthorize;
+    }
+
+    public void setWeChatMpAuthorize(String weChatMpAuthorize) {
+        WeChatMpAuthorize = weChatMpAuthorize;
+    }
+
+    public String getWeChatOpenAuthorize() {
+        return WeChatOpenAuthorize;
+    }
+
+    public void setWeChatOpenAuthorize(String weChatOpenAuthorize) {
+        WeChatOpenAuthorize = weChatOpenAuthorize;
+    }
+
+    public String getSellUrl() {
+        return sellUrl;
+    }
+
+    public void setSellUrl(String sellUrl) {
+        this.sellUrl = sellUrl;
+    }
 }

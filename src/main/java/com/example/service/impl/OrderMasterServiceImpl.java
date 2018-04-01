@@ -12,14 +12,11 @@ import com.example.enums.ResultEnum;
 import com.example.exception.SellException;
 import com.example.repository.OrderDetailRepository;
 import com.example.repository.OrderMasterRepository;
-import com.example.service.OrderMasterService;
-import com.example.service.PayService;
-import com.example.service.ProductService;
+import com.example.service.*;
 import com.example.utils.KeyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -28,8 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,6 +43,12 @@ public class OrderMasterServiceImpl implements OrderMasterService {
     private OrderMasterRepository orderMasterRepository;
     @Autowired
     private PayService payService;
+
+    @Autowired
+    private WebSocket webSocket;
+
+    @Autowired
+    private PushMessageService messageService;
 
     @Override
     @Transactional
@@ -108,12 +109,16 @@ public class OrderMasterServiceImpl implements OrderMasterService {
                 new CartDTO(e.getProductId(), e.getProductQuantity()))
                 .collect(Collectors.toList());
         productService.decreaseStock(cartDTOList);
+        //发送消息
+        webSocket.sendmessage("orderDTO.getOrderID()");
+
+
         return orderDTO;
     }
 
     @Override
     public OrderDTO findOne(String orderId) {
-        OrderMaster orderMaster = orderMasterRepository.findOne(orderId);
+        OrderMaster orderMaster = orderMasterRepository.getOne(orderId);
         if (orderMaster == null)
             throw new SellException(ResultEnum.ORDER_NOT_EXIST);
 
@@ -203,6 +208,10 @@ public class OrderMasterServiceImpl implements OrderMasterService {
             log.error("【完结订单】完结订单，updateResult={}", updateResult);
             throw new SellException(ResultEnum.ORDER_UPDATE_FAIL);
         }
+
+        //推送模板消息
+        messageService.orderStatus(orderDTO);
+
         return orderDTO;
     }
 

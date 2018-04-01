@@ -23,11 +23,27 @@ public enum ResultEnum {
     WXPAY_NOTIFY_MONEY_VERIFY_ERROR(20, "金额校验不通过"),
     ORDER_FINISH_SUCCESS(22, "订单完结成功"),
     PRODUCT_STATUS_ERROR(23, "商品状态错误"),
-    LOGIN_FAIL(24, "登陆失败，登录信息不正确");
+    LOGIN_FAIL(24, "登陆失败，登录信息不正确"), LOGOUT_SUCCESS(25, "登出成功");
 
     private Integer code;
 
     private String message;
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     ResultEnum(Integer code, String message) {
         this.code = code;

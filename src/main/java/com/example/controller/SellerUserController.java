@@ -8,6 +8,8 @@ import com.example.enums.ResultEnum;
 import com.example.service.SellerService;
 import com.example.utils.CookieUtil;
 import com.lly835.bestpay.rest.type.Get;
+import jdk.nashorn.internal.parser.Token;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 import java.util.UUID;
@@ -27,8 +30,10 @@ import java.util.concurrent.TimeUnit;
  * 卖家用户
  * Created by qidd on 2018-3-25
  */
+
 @Controller
 @RequestMapping("/seller/selleruser")
+@Slf4j
 public class SellerUserController {
 
     @Autowired
@@ -63,6 +68,25 @@ public class SellerUserController {
         CookieUtil.set(response, CookieConstant.TOKEN, token, expire);
         return new ModelAndView("redirect:" + projectUrlConfig.getSellUrl() + "/seller/order/list");
 
+    }
+
+    @GetMapping("logout")
+    public ModelAndView logout(HttpServletRequest request, HttpServletResponse response,
+                               Map<String, Object> map
+    ) {
+        //1、从cookie查询
+        Cookie cookie = CookieUtil.get(request, CookieConstant.TOKEN);
+        if (cookie != null) {
+
+            //2、清楚redis
+            redisTemplate.opsForValue().getOperations().delete(String.format(RedisConstant.TOKEN_PREFIX, cookie.getValue()));
+            //3、清楚cookie
+            CookieUtil.set(response, CookieConstant.TOKEN, null, 0);
+        }
+
+        map.put("message", ResultEnum.LOGOUT_SUCCESS.getMessage());
+        map.put("url", "/sell/seller/order/list");
+        return new ModelAndView("common/success", map);
     }
 
 

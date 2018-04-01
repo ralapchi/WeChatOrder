@@ -5,7 +5,7 @@ package com.example.constant;
  */
 public interface RedisConstant {
 
-    String TOKEN_PREFIX="TOKEN_%s";
-Integer EXPIRE = 7200;//SECOND
+    String TOKEN_PREFIX = "TOKEN_%s";
+    Integer EXPIRE = 7200;//SECOND
 
 }

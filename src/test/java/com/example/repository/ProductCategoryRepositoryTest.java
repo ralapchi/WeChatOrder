@@ -20,13 +20,13 @@ public class ProductCategoryRepositoryTest {
 
     @Test
     public void findOneTest() {
-        ProductCategory productCategory = productCategoryRepository.findOne(1);
+        ProductCategory productCategory = productCategoryRepository.getOne(1);
         System.out.println(productCategory.toString());
     }
 
     @Test
     public void saveTest() {
-        ProductCategory  productCategory=new ProductCategory("dafsfs",12);
+        ProductCategory productCategory = new ProductCategory("dafsfs", 12);
         ProductCategory result = productCategoryRepository.save(productCategory);
         Assert.assertNotNull(result);
 
