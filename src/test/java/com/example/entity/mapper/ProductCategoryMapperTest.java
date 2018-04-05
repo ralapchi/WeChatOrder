@@ -1,5 +1,7 @@
 package com.example.entity.mapper;
 
+import com.example.entity.ProductCategory;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +24,30 @@ public class ProductCategoryMapperTest {
     private ProductCategoryMapper mapper;
 
     @Test
-    public void insert() {
+    public void insert() throws Exception {
         Map<String, Object> map = new HashMap<>();
-        map.put("最讨厌","桃色");
+        map.put("category_Name", "桃色");
+        map.put("category_Type", 101);
+        int result = mapper.insertByMap(map);
+        Assert.assertEquals(1, result);
+
+    }
+
+    @Test
+    public void insertByObject() {
+        ProductCategory productCategory = new ProductCategory();
+        productCategory.setCategoryId(4656465);
+        productCategory.setCategoryName("桃花");
+        productCategory.setCategoryType(101);
+
+        int result = mapper.insertByObject(productCategory);
+        Assert.assertEquals(1, result);
+
+    }
+
+
+    @Test
+    public void findByCategoryType(){
+
     }
 }

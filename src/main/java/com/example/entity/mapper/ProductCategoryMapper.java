@@ -11,13 +11,12 @@ import java.util.Map;
 /**
  * Created by qidd on 2018-4-1
  */
-@Mapper
 public interface ProductCategoryMapper {
 
-    @Insert("insert into product_category(category_name,category_type) values(#{category_name,jdblType=VARCHAR},#{category_type,jdbcType=INTEGER)")
+    @Insert("insert into product_category(category_name,category_type) values(#{category_name,jdbcType=VARCHAR},#{category_type,jdbcType=INTEGER)")
     int insertByMap(Map<String, Object> map);
 
-    @Insert("insert into product_category(category_name,category_type) values(#{categoryName,jdblType=VARCHAR},#{categoryType,jdbcType=INTEGER)")
+    @Insert("insert into product_category(category_name,category_type) values(#{categoryName,jdbcType=VARCHAR},#{categoryType,jdbcType=INTEGER)")
     int insertByObject(ProductCategory productCategory);
 
     @Select("select * from product_category where category_type =#{categoryType}")
@@ -40,4 +39,7 @@ public interface ProductCategoryMapper {
 
     @Update("update product_category set category_name = #{categoryName} where category_type =#{categoryType}")
     int updateByType(@Param("categoryType") String categoryType, @Param("categoryName") String categoryName);
+
+
+    ProductCategory findByCategoryType(Integer categoryType);
 }

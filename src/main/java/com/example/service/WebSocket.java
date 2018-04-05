@@ -1,4 +1,4 @@
-package com.example.service.impl;
+package com.example.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -15,9 +15,10 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * Created by qidd on 2018-4-1
  */
 @Component
-@ServerEndpoint("/webSocket")
+@ServerEndpoint(value = "/webSocket")
 @Slf4j
 public class WebSocket {
+
     private Session session;
 
     private static CopyOnWriteArraySet<WebSocket> webSocketSet = new CopyOnWriteArraySet<>();
@@ -27,6 +28,7 @@ public class WebSocket {
     public void OnOpen(Session session) {
         this.session = session;
         webSocketSet.add(this);
+        log.info("有新的链接，总数={}", webSocketSet.size());
 
 
     }
@@ -34,6 +36,7 @@ public class WebSocket {
     @OnClose
     public void OnClose() {
         webSocketSet.remove(this);
+        log.info("连接断开，总数={}", webSocketSet.size());
     }
 
     @OnMessage
@@ -44,7 +47,6 @@ public class WebSocket {
     public void sendmessage(String message) {
         for (WebSocket webSocket : webSocketSet) {
             try {
-
                 webSocket.session.getBasicRemote().sendText(message);
             } catch (IOException e) {
                 log.info("消息={}", e.getMessage());

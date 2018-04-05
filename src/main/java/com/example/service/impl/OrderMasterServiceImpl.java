@@ -15,6 +15,7 @@ import com.example.repository.OrderMasterRepository;
 import com.example.service.*;
 import com.example.utils.KeyUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.omg.CORBA.TIMEOUT;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,6 +36,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class OrderMasterServiceImpl implements OrderMasterService {
 
+    private static final int TIMEOUT = 10 * 1000;
     @Autowired
     private ProductService productService;
     @Autowired
@@ -46,6 +48,9 @@ public class OrderMasterServiceImpl implements OrderMasterService {
 
     @Autowired
     private WebSocket webSocket;
+
+    @Autowired
+    private RedisLock redisLock;
 
     @Autowired
     private PushMessageService messageService;
@@ -103,12 +108,17 @@ public class OrderMasterServiceImpl implements OrderMasterService {
         orderMaster.setPayStatus(PayStatusEnum.WAIT.getCode());
         orderMasterRepository.save(orderMaster);
 
-
+//加锁
+        long time = System.currentTimeMillis() + TIMEOUT;
+        if (!redisLock.lock(orderId, String.valueOf(time)))
+            throw new SellException(101, "哎哟喂，人也太多了");
         //4.扣库存
         List<CartDTO> cartDTOList = orderDTO.getOrderDetailList().stream().map(e ->
                 new CartDTO(e.getProductId(), e.getProductQuantity()))
                 .collect(Collectors.toList());
         productService.decreaseStock(cartDTOList);
+
+        redisLock.unlock(orderId, String.valueOf(time));
         //发送消息
         webSocket.sendmessage("orderDTO.getOrderID()");
 

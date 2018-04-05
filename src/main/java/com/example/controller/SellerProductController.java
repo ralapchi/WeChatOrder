@@ -13,6 +13,8 @@ import com.example.utils.KeyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
@@ -33,7 +35,7 @@ import java.util.Map;
 @Controller
 @Slf4j
 @RequestMapping("seller/product")
-public class SellProductController {
+public class SellerProductController {
 
     @Autowired
     private ProductService productService;
@@ -47,7 +49,7 @@ public class SellProductController {
                              Map<String, Object> map) {
 
         PageRequest pageRequest = new PageRequest(page - 1, size);
-      //  log.info("productService={}", productService);
+        //  log.info("productService={}", productService);
         Page<ProductInfo> ProductInfoPage = productService.findAll(pageRequest);
         map.put("productPage", ProductInfoPage);
         map.put("currentPage", page);
@@ -102,6 +104,8 @@ public class SellProductController {
     }
 
     @PostMapping("save")
+//    @CachePut(cacheNames = "product", key = "123")
+    @CacheEvict(cacheNames = "product", key = "123")
     public ModelAndView save(@Valid ProductForm productForm, BindingResult bindingResult,
                              Map<String, Object> map) {
         if (bindingResult.hasErrors()) {
